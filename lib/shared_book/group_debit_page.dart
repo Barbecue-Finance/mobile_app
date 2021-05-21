@@ -70,34 +70,34 @@ class _GroupDebitPageState extends State<GroupDebitPage> {
               ],
             ),
           ),
-          InkWell(
-            child: Container(
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.grey))),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      text: 'show statistics',
-                      style: TextStyle(color: Colors.grey, fontSize: 30),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => StatisticsPagePersonal()));
-            },
-          ),
+          // InkWell(
+          //   child: Container(
+          //     decoration: BoxDecoration(
+          //         border: Border(bottom: BorderSide(color: Colors.grey))),
+          //     child: Row(
+          //       mainAxisAlignment: MainAxisAlignment.center,
+          //       children: [
+          //         RichText(
+          //           text: TextSpan(
+          //             text: 'show statistics',
+          //             style: TextStyle(color: Colors.grey, fontSize: 30),
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          //   onTap: () {
+          //     Navigator.push(
+          //         context,
+          //         MaterialPageRoute(
+          //             builder: (context) => StatisticsPagePersonal()));
+          //   },
+          // ),
           Expanded(
             child: ListView.builder(
               itemCount: operations.length,
               itemBuilder: (BuildContext context, int index) {
-                return OperationWidget(operation: operations[index]);
+                return OperationWidget(operation: operations[index],currentPurseId: purseId,);
               },
             ),
           ),

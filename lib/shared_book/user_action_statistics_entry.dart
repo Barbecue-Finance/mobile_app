@@ -32,7 +32,7 @@ class _UserActionStatisticsEntryState extends State<UserActionStatisticsEntry> {
               {
                 return maintRed;
               }
-              return maintGreen;
+              return mainGreen;
             }()), fontSize: 30),
           ),
         ),

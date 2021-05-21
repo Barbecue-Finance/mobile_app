@@ -4,14 +4,21 @@ import 'package:shashliki/shared_book/operation_model.dart';
 
 class OperationWidget extends StatefulWidget {
   final OperationModel? operation;
+  final int? currentPurseId;
 
-  const OperationWidget({Key? key, this.operation}) : super(key: key);
+  const OperationWidget({Key? key, this.operation, this.currentPurseId})
+      : super(key: key);
 
   @override
   _OperationWidgetState createState() => _OperationWidgetState();
 }
 
 class _OperationWidgetState extends State<OperationWidget> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,26 +29,81 @@ class _OperationWidgetState extends State<OperationWidget> {
         borderRadius: BorderRadius.all(Radius.circular(20)),
       ),
       child: (() {
-        switch (widget.operation!.type) {
-          case "outcoming":
+        if (widget.operation!.type == "outcoming") {
+          if (widget.operation!.purseId != widget.currentPurseId!) {
             return Column(
               children: [
-                RichText(
-                  text: TextSpan(
-                    text: widget.operation!.comment,
-                    style: TextStyle(color: Colors.white, fontSize: 30),
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        text: widget.operation!.comment,
+                        style: TextStyle(color: Colors.white, fontSize: 30),
+                      ),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        text: widget.operation!.comment,
+                        style: TextStyle(color: Colors.white, fontSize: 30),
+                      ),
+                    ),
+                  ],
                 ),
                 RichText(
                   text: TextSpan(
-                    text: widget.operation!.amount.toString(),
-                    style: TextStyle(color: Colors.white, fontSize: 30),
+                    text: "-" + widget.operation!.amount.toString(),
+                    style: TextStyle(color: maintRed, fontSize: 30),
                   ),
                 ),
               ],
             );
-          default:
-            break;
+          }
+          return Column(
+            children: [
+              RichText(
+                text: TextSpan(
+                  text: widget.operation!.comment,
+                  style: TextStyle(color: Colors.white, fontSize: 30),
+                ),
+              ),
+              RichText(
+                text: TextSpan(
+                  text: "-" + widget.operation!.amount.toString(),
+                  style: TextStyle(color: maintRed, fontSize: 30),
+                ),
+              ),
+            ],
+          );
+        }
+        if (widget.operation!.purseId != widget.currentPurseId!) {
+          return Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  RichText(
+                    text: TextSpan(
+                      text: widget.operation!.comment,
+                      style: TextStyle(color: Colors.white, fontSize: 30),
+                    ),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      text: widget.operation!.comment,
+                      style: TextStyle(color: Colors.white, fontSize: 30),
+                    ),
+                  ),
+                ],
+              ),
+              RichText(
+                text: TextSpan(
+                  text: "+" + widget.operation!.amount.toString(),
+                  style: TextStyle(color: mainGreen, fontSize: 30),
+                ),
+              ),
+            ],
+          );
         }
         return Column(
           children: [
@@ -49,6 +111,12 @@ class _OperationWidgetState extends State<OperationWidget> {
               text: TextSpan(
                 text: widget.operation!.comment,
                 style: TextStyle(color: Colors.white, fontSize: 30),
+              ),
+            ),
+            RichText(
+              text: TextSpan(
+                text: "+" + widget.operation!.amount.toString(),
+                style: TextStyle(color: mainGreen, fontSize: 30),
               ),
             ),
           ],

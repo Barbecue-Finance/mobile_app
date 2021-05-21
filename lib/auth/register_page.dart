@@ -16,10 +16,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
   _register() {
     register(
-        RegisterDto(
-            username: nameController.text,
-            login: loginController.text,
-            password: passwordController.text),
+             nameController.text,
+          loginController.text,
+           passwordController.text,
         context);
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shashliki/chat/chat_page.dart';
+import 'package:shashliki/home/books/api_books.dart';
 import 'package:shashliki/home/books/group_item.dart';
 import 'package:shashliki/home/home_page.dart';
 import 'package:shashliki/non_component/custom_colors.dart';
@@ -15,6 +16,20 @@ class GroupBookPage extends StatefulWidget {
 }
 
 class _GroupBookPageState extends State<GroupBookPage> {
+  int purseId = 0;
+
+  _initId() async {
+    purseId = await getPurseIdByGroupId(widget.group!.id);
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    _initId();
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +65,7 @@ class _GroupBookPageState extends State<GroupBookPage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.symmetric(vertical: 30),
+            margin: EdgeInsets.only(top: 30),
             width: 200.0,
             height: 200.0,
             decoration: new BoxDecoration(
@@ -62,6 +77,17 @@ class _GroupBookPageState extends State<GroupBookPage> {
                 text: TextSpan(
                   text: widget.group!.name[0],
                   style: TextStyle(color: Colors.black, fontSize: 100),
+                ),
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 5,bottom: 30),
+            child: Center(
+              child: RichText(
+                text: TextSpan(
+                  text: "purse id: " + purseId.toString(),
+                  style: TextStyle(color: Colors.grey, fontSize: 30),
                 ),
               ),
             ),
@@ -90,8 +116,12 @@ class _GroupBookPageState extends State<GroupBookPage> {
                     ),
                   ),
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => GroupDebitPage(groupId: widget.group!.id,)));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => GroupDebitPage(
+                                  groupId: widget.group!.id,
+                                )));
                   },
                 ),
                 InkWell(
@@ -117,8 +147,12 @@ class _GroupBookPageState extends State<GroupBookPage> {
                     ),
                   ),
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => ChatPage(groupId: widget.group!.id,)));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ChatPage(
+                                  groupId: widget.group!.id,
+                                )));
                   },
                 ),
                 InkWell(
@@ -137,13 +171,15 @@ class _GroupBookPageState extends State<GroupBookPage> {
                             style: TextStyle(color: Colors.white, fontSize: 35),
                           ),
                         ),
-                        
                       ],
                     ),
                   ),
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => MembersPage(group: widget.group)));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                MembersPage(group: widget.group)));
                   },
                 ),
               ],

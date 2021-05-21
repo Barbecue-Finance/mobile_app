@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shashliki/home/home_page.dart';
 import 'package:shashliki/non_component/singleton_ds.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:crypto/crypto.dart';
 
 @JsonSerializable()
 class LoginDto {
@@ -141,22 +142,25 @@ class InvitesDto {
 
 String baseUrl = "https://akiana.io:8443/api";
 
-Future<void> login(LoginDto LoginDto, BuildContext context) async {
+Future<void> login(String login, String password, BuildContext context) async {
   bool trustSelfSigned = true;
   HttpClient httpClient = new HttpClient()
     ..badCertificateCallback =
         ((X509Certificate cert, String host, int port) => trustSelfSigned);
   IOClient ioClient = new IOClient(httpClient);
 
+  LoginDto loginDto = LoginDto(
+      login: login, password: md5.convert(utf8.encode(password)).toString());
+
   print('object');
   print(baseUrl + '/user/login');
-  print(json.encode(LoginDto));
+  print(json.encode(loginDto));
 
   final response = await ioClient.post(Uri.parse(baseUrl + '/user/login'),
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
       },
-      body: json.encode(LoginDto));
+      body: json.encode(loginDto));
 
   print(response.statusCode);
   print(response.body);
@@ -170,12 +174,18 @@ Future<void> login(LoginDto LoginDto, BuildContext context) async {
   }
 }
 
-Future<void> register(RegisterDto registerDto, BuildContext context) async {
+Future<void> register(String username, String login, String password,
+    BuildContext context) async {
   bool trustSelfSigned = true;
   HttpClient httpClient = new HttpClient()
     ..badCertificateCallback =
         ((X509Certificate cert, String host, int port) => trustSelfSigned);
   IOClient ioClient = new IOClient(httpClient);
+
+  RegisterDto registerDto = RegisterDto(
+      username: username,
+      login: login,
+      password: md5.convert(utf8.encode(password)).toString());
 
   print('object');
   print(baseUrl + '/api/user/create');

@@ -141,25 +141,26 @@ class PurseDto {
 }
 
 @JsonSerializable()
-class OperationDto {
-  OperationDto(
+class OutOperationDto {
+  OutOperationDto(
       {required this.id,
       required this.amount,
       required this.comment,
       required this.dateTime,
       required this.purseId,
-      required this.operationCategoryId,
-      required this.operationCategoryTitle});
+      required this.outComeOperationCategoryId,
+      required this.outComeOperationCategoryTitle});
 
-  factory OperationDto.fromJson(Map<String, dynamic> json) {
-    return OperationDto(
+  factory OutOperationDto.fromJson(Map<String, dynamic> json) {
+    return OutOperationDto(
         id: json['id'] as int,
         amount: (json['amount'] as num).toDouble(),
         comment: json['comment'] as String,
         dateTime: json['dateTime'] as String,
         purseId: json['purseId'] as int,
-        operationCategoryId: json['operationCategoryId'] as int,
-        operationCategoryTitle: json['operationCategoryTitle'] as String);
+        outComeOperationCategoryId: json['outComeOperationCategoryId'] as int,
+        outComeOperationCategoryTitle:
+            json['outComeOperationCategoryTitle'] as String?);
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -168,8 +169,8 @@ class OperationDto {
         'comment': this.comment,
         'dateTime': this.dateTime,
         'purseId': this.purseId,
-        'operationCategoryId': this.operationCategoryId,
-        'operationCategoryTitle': this.operationCategoryTitle
+        'outComeOperationCategoryId': this.outComeOperationCategoryId,
+        'outComeOperationCategoryTitle': this.outComeOperationCategoryTitle
       };
 
   final int id;
@@ -177,8 +178,50 @@ class OperationDto {
   final String comment;
   final String dateTime;
   final int purseId;
-  final int operationCategoryId;
-  final String operationCategoryTitle;
+  final int outComeOperationCategoryId;
+  final String? outComeOperationCategoryTitle;
+}
+
+@JsonSerializable()
+class InOperationDto {
+  InOperationDto(
+      {required this.id,
+      required this.amount,
+      required this.comment,
+      required this.dateTime,
+      required this.purseId,
+      required this.incomeOperationCategoryId,
+      required this.incomeOperationCategoryTitle});
+
+  factory InOperationDto.fromJson(Map<String, dynamic> json) {
+    return InOperationDto(
+        id: json['id'] as int,
+        amount: (json['amount'] as num).toDouble(),
+        comment: json['comment'] as String,
+        dateTime: json['dateTime'] as String,
+        purseId: json['purseId'] as int,
+        incomeOperationCategoryId: json['incomeOperationCategoryId'] as int,
+        incomeOperationCategoryTitle:
+            json['incomeOperationCategoryTitle'] as String?);
+  }
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'id': this.id,
+        'amount': this.amount,
+        'comment': this.comment,
+        'dateTime': this.dateTime,
+        'purseId': this.purseId,
+        'incomeOperationCategoryId': this.incomeOperationCategoryId,
+        'incomeOperationCategoryTitle': this.incomeOperationCategoryTitle
+      };
+
+  final int id;
+  final double amount;
+  final String comment;
+  final String dateTime;
+  final int purseId;
+  final int incomeOperationCategoryId;
+  final String? incomeOperationCategoryTitle;
 }
 
 @JsonSerializable()
@@ -188,30 +231,30 @@ class PurseOperationsDto {
   factory PurseOperationsDto.fromJson(Map<String, dynamic> json) {
     return PurseOperationsDto(
         outComing: (json['outComing'] as List<dynamic>)
-            .map((e) => OperationDto.fromJson(e as Map<String, dynamic>))
+            .map((e) => OutOperationDto.fromJson(e as Map<String, dynamic>))
             .toList(),
         incoming: (json['incoming'] as List<dynamic>)
-            .map((e) => OperationDto.fromJson(e as Map<String, dynamic>))
+            .map((e) => InOperationDto.fromJson(e as Map<String, dynamic>))
             .toList());
   }
 
   Map<String, dynamic> toJson() =>
       <String, dynamic>{'outComing': this.outComing, 'incoming': this.incoming};
 
-  final List<OperationDto> outComing;
-  final List<OperationDto> incoming;
+  final List<OutOperationDto> outComing;
+  final List<InOperationDto> incoming;
 }
 
 @JsonSerializable()
-class CreateIncomeRequest {
-  CreateIncomeRequest(
+class CreateOperationRequest {
+  CreateOperationRequest(
       {required this.amount,
       required this.comment,
       required this.purseId,
       required this.operationCategoryTitle});
 
-  factory CreateIncomeRequest.fromJson(Map<String, dynamic> json) {
-    return CreateIncomeRequest(
+  factory CreateOperationRequest.fromJson(Map<String, dynamic> json) {
+    return CreateOperationRequest(
         amount: (json['amount'] as num).toDouble(),
         comment: json['comment'] as String,
         purseId: json['purseId'] as int,
@@ -428,7 +471,7 @@ Future<void> createIncome(double amount, String comment, int purseId) async {
   print('object');
   print(baseUrl + '/moneyoperation/createincome');
 
-  CreateIncomeRequest request = CreateIncomeRequest(
+  CreateOperationRequest request = CreateOperationRequest(
       amount: amount,
       comment: comment,
       purseId: purseId,
@@ -458,7 +501,7 @@ Future<void> createOutcome(double amount, String comment, int purseId) async {
   print('object');
   print(baseUrl + '/moneyoperation/createoutcome');
 
-  CreateIncomeRequest request = CreateIncomeRequest(
+  CreateOperationRequest request = CreateOperationRequest(
       amount: amount,
       comment: comment,
       purseId: purseId,

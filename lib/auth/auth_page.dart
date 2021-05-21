@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shashliki/auth/register_page.dart';
+import 'package:shashliki/non_component/custom_colors.dart';
 
 import 'api_auth.dart';
 
@@ -14,17 +15,14 @@ class _AuthPageState extends State<AuthPage> {
   final passwordController = TextEditingController();
 
   _login() {
-    login(
-        LoginDto(
-            login: loginController.text, password: passwordController.text),
-        context);
+    login(loginController.text, passwordController.text, context);
   }
 
   void _changeColor() {
     setState(() {
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
         statusBarColor: Colors.transparent,
-        systemNavigationBarColor: Colors.white,
+        systemNavigationBarColor: mainBlue,
       ));
     });
   }
@@ -45,9 +43,9 @@ class _AuthPageState extends State<AuthPage> {
         child: Column(
           children: [
             Container(
-                height: MediaQuery.of(context).padding.top,
-                color: Colors.transparent,
-              ),
+              height: MediaQuery.of(context).padding.top,
+              color: Colors.transparent,
+            ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -131,7 +129,8 @@ class _AuthPageState extends State<AuthPage> {
                         Expanded(
                           flex: 4,
                           child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(primary: Colors.blue),
+                            style:
+                                ElevatedButton.styleFrom(primary: Colors.blue),
                             onPressed: () {
                               _login();
                             },
@@ -153,7 +152,8 @@ class _AuthPageState extends State<AuthPage> {
                         Expanded(
                           flex: 4,
                           child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(primary: Colors.white),
+                            style:
+                                ElevatedButton.styleFrom(primary: Colors.white),
                             onPressed: () {
                               Navigator.push(
                                   context,
