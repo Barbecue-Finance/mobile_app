@@ -4,6 +4,8 @@ class OperationModel {
   late String _comment;
   late String _dateTime;
   late int _purseId;
+  late int _userId;
+  late String _userName;
 
   double get amount => _amount;
   set amount(double val) {
@@ -30,5 +32,15 @@ class OperationModel {
     _purseId = val;
   }
 
-  OperationModel(this._amount,this._type, this._comment, this._dateTime, this._purseId);
+  int get userId => _userId;
+  set userId(int val) {
+    _userId = val;
+  }
+
+  String get userName => _userName;
+  set userName(String val) {
+    _userName = val;
+  }
+
+  OperationModel(this._amount,this._type, this._comment, this._dateTime, this._purseId,this._userId,this._userName);
 }

@@ -105,6 +105,7 @@ class _AuthPageState extends State<AuthPage> {
                     padding: EdgeInsets.all(3),
                     margin: EdgeInsets.all(5),
                     child: TextField(
+                      obscureText: true,
                       controller: passwordController,
                       style: TextStyle(color: Colors.white),
                       decoration: InputDecoration(

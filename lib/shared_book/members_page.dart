@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shashliki/home/books/api_books.dart';
@@ -20,11 +22,22 @@ class _MembersPageState extends State<MembersPage> {
   List<MemberModel> _members = [];
   final idController = TextEditingController();
 
+  _initMembers() async{
+    List<MemberModel> t =[];
+    t.addAll(widget.group!.users.map((e) => MemberModel(e.username,e.id)));
+
+    setState(() {
+      _members=t;
+    });
+  }
+
   @override
   void initState() {
-    setState(() {
-      _members.addAll(widget.group!.users.map((e) => MemberModel(e.username,e.id)));
-    });
+    _initMembers();
+
+    const secs=const Duration(seconds: 5);
+
+    Timer.periodic(secs, (timer) {_initMembers();});
 
     super.initState();
   }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:shashliki/auth/api_auth.dart';
 import 'package:shashliki/group_book/group_book_page.dart';
@@ -27,6 +29,10 @@ class _BooksWidgetState extends State<BooksWidget> {
   @override
   void initState() {
     _initGroups();
+
+    const secs=const Duration(seconds: 5);
+
+    Timer.periodic(secs, (timer) {_initGroups();});
 
     super.initState();
   }

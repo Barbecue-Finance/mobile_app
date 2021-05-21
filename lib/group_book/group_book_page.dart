@@ -121,6 +121,7 @@ class _GroupBookPageState extends State<GroupBookPage> {
                         MaterialPageRoute(
                             builder: (context) => GroupDebitPage(
                                   groupId: widget.group!.id,
+                                  group: widget.group!,
                                 )));
                   },
                 ),

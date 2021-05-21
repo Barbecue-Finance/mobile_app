@@ -114,7 +114,7 @@ class _AddActionPageState extends State<AddActionPage> {
                                 text: TextSpan(
                                   text: 'spent',
                                   style:
-                                      TextStyle(color: maintRed, fontSize: 30),
+                                      TextStyle(color: mainRed, fontSize: 30),
                                 ),
                               ),
                               value: "spent",
@@ -144,6 +144,16 @@ class _AddActionPageState extends State<AddActionPage> {
                       ),
                     ),
                   ],
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 5, top: 20, bottom: 5),
+                  alignment: Alignment.topLeft,
+                  child: RichText(
+                    text: TextSpan(
+                      text: 'Amount',
+                      style: TextStyle(color: Colors.white, fontSize: 30),
+                    ),
+                  ),
                 ),
                 Container(
                   padding: EdgeInsets.all(3),

@@ -40,7 +40,8 @@ class _StatisticsPagePersonalState extends State<StatisticsPagePersonal> {
                 ),
               ],
             ),
-          )
+          ),
+          
         ],
       ),
     );

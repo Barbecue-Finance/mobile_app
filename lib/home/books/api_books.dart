@@ -149,7 +149,9 @@ class OutOperationDto {
       required this.dateTime,
       required this.purseId,
       required this.outComeOperationCategoryId,
-      required this.outComeOperationCategoryTitle});
+      required this.outComeOperationCategoryTitle,
+      required this.userId,
+      required this.userUsername});
 
   factory OutOperationDto.fromJson(Map<String, dynamic> json) {
     return OutOperationDto(
@@ -160,7 +162,9 @@ class OutOperationDto {
         purseId: json['purseId'] as int,
         outComeOperationCategoryId: json['outComeOperationCategoryId'] as int,
         outComeOperationCategoryTitle:
-            json['outComeOperationCategoryTitle'] as String?);
+            json['outComeOperationCategoryTitle'] as String?,
+        userId: json['userId'] as int,
+        userUsername: json['userUsername'] as String);
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -170,7 +174,9 @@ class OutOperationDto {
         'dateTime': this.dateTime,
         'purseId': this.purseId,
         'outComeOperationCategoryId': this.outComeOperationCategoryId,
-        'outComeOperationCategoryTitle': this.outComeOperationCategoryTitle
+        'outComeOperationCategoryTitle': this.outComeOperationCategoryTitle,
+        'userId': this.userId,
+        'userUsername': this.userUsername
       };
 
   final int id;
@@ -180,6 +186,8 @@ class OutOperationDto {
   final int purseId;
   final int outComeOperationCategoryId;
   final String? outComeOperationCategoryTitle;
+  final int userId;
+  final String userUsername;
 }
 
 @JsonSerializable()
@@ -191,7 +199,9 @@ class InOperationDto {
       required this.dateTime,
       required this.purseId,
       required this.incomeOperationCategoryId,
-      required this.incomeOperationCategoryTitle});
+      required this.incomeOperationCategoryTitle,
+      required this.userId,
+      required this.userUsername});
 
   factory InOperationDto.fromJson(Map<String, dynamic> json) {
     return InOperationDto(
@@ -202,7 +212,9 @@ class InOperationDto {
         purseId: json['purseId'] as int,
         incomeOperationCategoryId: json['incomeOperationCategoryId'] as int,
         incomeOperationCategoryTitle:
-            json['incomeOperationCategoryTitle'] as String?);
+            json['incomeOperationCategoryTitle'] as String?,
+        userId: json['userId'] as int,
+        userUsername: json['userUsername'] as String);
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -212,7 +224,9 @@ class InOperationDto {
         'dateTime': this.dateTime,
         'purseId': this.purseId,
         'incomeOperationCategoryId': this.incomeOperationCategoryId,
-        'incomeOperationCategoryTitle': this.incomeOperationCategoryTitle
+        'incomeOperationCategoryTitle': this.incomeOperationCategoryTitle,
+        'userId': this.userId,
+        'userUsername': this.userUsername
       };
 
   final int id;
@@ -222,6 +236,8 @@ class InOperationDto {
   final int purseId;
   final int incomeOperationCategoryId;
   final String? incomeOperationCategoryTitle;
+  final int userId;
+  final String userUsername;
 }
 
 @JsonSerializable()
@@ -251,27 +267,31 @@ class CreateOperationRequest {
       {required this.amount,
       required this.comment,
       required this.purseId,
-      required this.operationCategoryTitle});
+      required this.operationCategoryTitle,
+      required this.userId});
 
   factory CreateOperationRequest.fromJson(Map<String, dynamic> json) {
     return CreateOperationRequest(
         amount: (json['amount'] as num).toDouble(),
         comment: json['comment'] as String,
         purseId: json['purseId'] as int,
-        operationCategoryTitle: json['operationCategoryTitle'] as String);
+        operationCategoryTitle: json['operationCategoryTitle'] as String,
+        userId: json['userId'] as int);
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'amount': this.amount,
         'comment': this.comment,
         'purseId': this.purseId,
-        'operationCategoryTitle': this.operationCategoryTitle
+        'operationCategoryTitle': this.operationCategoryTitle,
+        'userId': this.userId
       };
 
   final double amount;
   final String comment;
   final int purseId;
   final String operationCategoryTitle;
+  final int userId;
 }
 
 @JsonSerializable()
@@ -280,27 +300,31 @@ class CreateTransferRequest {
       {required this.amount,
       required this.comment,
       required this.fromPurseId,
-      required this.toPurseId});
+      required this.toPurseId,
+      required this.userId});
 
   factory CreateTransferRequest.fromJson(Map<String, dynamic> json) {
     return CreateTransferRequest(
         amount: (json['amount'] as num).toDouble(),
         comment: json['comment'] as String,
         fromPurseId: json['fromPurseId'] as int,
-        toPurseId: json['toPurseId'] as int);
+        toPurseId: json['toPurseId'] as int,
+        userId: json['userId'] as int);
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'amount': this.amount,
         'comment': this.comment,
         'fromPurseId': this.fromPurseId,
-        'toPurseId': this.toPurseId
+        'toPurseId': this.toPurseId,
+        'userId': this.userId
       };
 
   final double amount;
   final String comment;
   final int fromPurseId;
   final int toPurseId;
+  final int userId;
 }
 
 String baseUrl = "https://akiana.io:8443/api";
@@ -446,17 +470,38 @@ Future<List<OperationModel>> getOperations(int purseId) async {
   print(response.body);
 
   List<OperationModel> res = [];
+  List<OperationModel> out = [];
+  List<OperationModel> inc = [];
 
-  res.addAll(PurseOperationsDto.fromJson(json.decode(response.body))
+  out.addAll(PurseOperationsDto.fromJson(json.decode(response.body))
       .outComing
-      .map((e) => OperationModel(
-          e.amount, "outcoming", e.comment, e.dateTime, e.purseId)));
-  res.addAll(PurseOperationsDto.fromJson(json.decode(response.body))
+      .map((e) => OperationModel(e.amount, "outcoming", e.comment, e.dateTime,
+          e.purseId, e.userId, e.userUsername)));
+  inc.addAll(PurseOperationsDto.fromJson(json.decode(response.body))
       .incoming
-      .map((e) => OperationModel(
-          e.amount, "incoming", e.comment, e.dateTime, e.purseId)));
+      .map((e) => OperationModel(e.amount, "incoming", e.comment, e.dateTime,
+          e.purseId, e.userId, e.userUsername)));
+
+  while (out.length != 0 && inc.length != 0) {
+    if (getMinutes(out[0].dateTime.substring(11, 13),
+            out[0].dateTime.substring(14, 16)) <=
+        getMinutes(inc[0].dateTime.substring(11, 13),
+            inc[0].dateTime.substring(14, 16))) {
+      res.add(out[0]);
+      out.removeAt(0);
+    } else {
+      res.add(inc[0]);
+      inc.removeAt(0);
+    }
+  }
+  res.addAll(out);
+  res.addAll(inc);
 
   return res;
+}
+
+int getMinutes(String hours, String minutes) {
+  return int.parse(hours) * 60 + int.parse(minutes);
 }
 
 Future<void> createIncome(double amount, String comment, int purseId) async {
@@ -475,7 +520,8 @@ Future<void> createIncome(double amount, String comment, int purseId) async {
       amount: amount,
       comment: comment,
       purseId: purseId,
-      operationCategoryTitle: "general");
+      operationCategoryTitle: "general",
+      userId: ds.userId);
 
   final response = await ioClient.post(
       Uri.parse(baseUrl + '/moneyoperation/createincome'),
@@ -505,7 +551,8 @@ Future<void> createOutcome(double amount, String comment, int purseId) async {
       amount: amount,
       comment: comment,
       purseId: purseId,
-      operationCategoryTitle: "general");
+      operationCategoryTitle: "general",
+      userId: ds.userId);
 
   final response = await ioClient.post(
       Uri.parse(baseUrl + '/moneyoperation/createoutcome'),
@@ -534,7 +581,7 @@ Future<void> createTransfer(
   print(baseUrl + '/moneyoperation/createtransfer');
 
   CreateTransferRequest request = CreateTransferRequest(
-      amount: amount, comment: comment, fromPurseId: fromId, toPurseId: toId);
+      amount: amount, comment: comment, fromPurseId: fromId, toPurseId: toId,userId: ds.userId);
 
   final response = await ioClient.post(
       Uri.parse(baseUrl + '/moneyoperation/createtransfer'),
